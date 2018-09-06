@@ -5,6 +5,8 @@ import { ColHead, DetailsPage, List, ListHeader, ListPage } from './factory';
 import { Cog, detailsPage, navFactory, ResourceCog, SectionHeading, ResourceLink, ResourceSummary } from './utils';
 // eslint-disable-next-line no-unused-vars
 import { K8sResourceKind, K8sResourceKindReference } from '../module/k8s';
+// import InputField from './input-field'
+// import StorageClassForm from './storage/storage-class-form';
 
 export const StorageClassReference: K8sResourceKindReference = 'StorageClass';
 
@@ -55,10 +57,50 @@ const StorageClassDetails: React.SFC<StorageClassDetailsProps> = ({obj}) => <Rea
 export const StorageClassList: React.SFC = props => <List {...props} Header={StorageClassHeader} Row={StorageClassRow} />;
 StorageClassList.displayName = 'StorageClassList';
 
-export const StorageClassPage: React.SFC<StorageClassPageProps> = props =>
-  <ListPage {...props} title="Storage Classes" kind={StorageClassReference} ListComponent={StorageClassList} canCreate={true} filterLabel={props.filterLabel} />;
-StorageClassPage.displayName = 'StorageClassListPage';
+/* eslint-disable no-undef */
+export class StorageClassPage extends React.Component<StorageClassPageProps, StorageClassPageState> {
 
+  constructor(props){
+    super(props);
+    this.state = {
+      showForm: false
+    };
+  }
+
+  createItems = {
+    wizard: 'Create with Form',
+    yaml: 'Create from YAML'
+  };
+
+  createProps = {
+    items: this.createItems,
+    btnActionItemKey: 'form',
+    action: (type) => {
+      switch (type) {
+        case 'form':
+        // return () => this.setState({showForm: true});
+          return null;
+        default:
+          return `/k8s/cluster/storageclasses/new/`;
+      }
+    }
+  };
+
+  render() {
+    return (
+      <React.Fragment>
+
+        <ListPage {...this.props}
+          title="Storage Classes"
+          kind={StorageClassReference}
+          ListComponent={StorageClassList}
+          canCreate={true}
+          filterLabel={this.props.filterLabel}
+          createProps={this.createProps} />;
+      </React.Fragment>
+    );
+  }
+}
 
 const pages = [navFactory.details(detailsPage(StorageClassDetails)), navFactory.editYaml()];
 
@@ -78,6 +120,11 @@ export type StorageClassDetailsProps = {
 
 export type StorageClassPageProps = {
   filterLabel: string,
+  namespace: string
+};
+
+export type StorageClassPageState = {
+  showForm: boolean
 };
 
 export type StorageClassDetailsPageProps = {
