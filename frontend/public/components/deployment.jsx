@@ -34,7 +34,13 @@ const UpdateStrategy = (kind, deployment) => ({
   callback: () => configureUpdateStrategyModal({deployment}),
 });
 
+const AddStorage = (kind, deployment) => ({
+  label: 'Add Storage',
+  href: `/k8s/ns/${deployment.metadata.namespace}/${kind.plural}/${deployment.metadata.name}/attachstorage`,
+});
+
 const menuActions = [
+  AddStorage,
   ModifyCount,
   UpdateStrategy,
   EditEnvironment,

@@ -9,7 +9,13 @@ import { breadcrumbsForOwnerRefs } from './utils/breadcrumbs';
 import { ResourceEventStream } from './events';
 
 const {ModifyCount, EditEnvironment, common} = Cog.factory;
-export const replicaSetMenuActions = [ModifyCount, EditEnvironment, ...common];
+
+const AddStorage = (kind, rs) => ({
+  label: 'Add Storage',
+  href: `/k8s/ns/${rs.metadata.namespace}/${kind.plural}/${rs.metadata.name}/attachstorage`,
+});
+
+export const replicaSetMenuActions = [AddStorage,ModifyCount, EditEnvironment, ...common];
 
 const Details = ({obj: replicaSet}) => {
   const revision = _.get(replicaSet, ['metadata', 'annotations', 'deployment.kubernetes.io/revision']);
