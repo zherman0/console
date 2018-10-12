@@ -54,17 +54,12 @@ const rolloutAction = (kind, obj) => ({
   }),
 });
 
-const {ModifyCount, EditEnvironment, common} = Cog.factory;
-
-const AddStorage = (kind, deployment) => ({
-  label: 'Add Storage',
-  href: `/k8s/ns/${deployment.metadata.namespace}/${kind.plural}/${deployment.metadata.name}/attachstorage`,
-});
+const {ModifyCount, AddStorage, EditEnvironment, common} = Cog.factory;
 
 const menuActions = [
-  AddStorage,
   rolloutAction,
   ModifyCount,
+  AddStorage,
   EditEnvironment,
   ...common,
 ];

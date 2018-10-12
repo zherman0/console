@@ -27,21 +27,16 @@ import {
   SectionHeading
 } from './utils';
 
-const {ModifyCount, EditEnvironment, common} = Cog.factory;
+const {ModifyCount, AddStorage, EditEnvironment, common} = Cog.factory;
 
 const UpdateStrategy = (kind, deployment) => ({
   label: 'Edit Update Strategy',
   callback: () => configureUpdateStrategyModal({deployment}),
 });
 
-const AddStorage = (kind, deployment) => ({
-  label: 'Add Storage',
-  href: `/k8s/ns/${deployment.metadata.namespace}/${kind.plural}/${deployment.metadata.name}/attachstorage`,
-});
-
 const menuActions = [
-  AddStorage,
   ModifyCount,
+  AddStorage,
   UpdateStrategy,
   EditEnvironment,
   ...common,
